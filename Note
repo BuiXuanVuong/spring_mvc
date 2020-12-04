@@ -1,0 +1,69 @@
+Ở trong servlet-jdbc thì ta dùng khái niệm model để làm trung gian binding data từ view vào controller và ngược lại
+ở trong mô hình spring mvc framework dùng khái niệm dto(data transfer Object) giống với khái niệm model ở trên
+entity là đại diện cho table trong database mapping vói table ở database
+dto: là data transfer object
+sử dụng model nó không tường minh nên phải tách entity và dto
+dto: là nơi transfer data có thể là giữa api và client hoặc controller và view
+cơ chế của jpa là object retional mapping nó không phụ thuộc thuần vào database nữa nó sẽ ánh xạ lên hết java class
+
+
+Để sử dụng được JpaAuditing ta phai add thư viện Spring Aspect
+Trong mối quan hệ n-n hoặc o-n để bật tính năng fetch = lazy thì trong jpaconfig ta phải thêm dòng code sau         properties.setProperty("hibernate.enable_lazy_load_no_trans", "true");
+
+trong taglib khai báo thêm:
+<%@ taglib prefix="security" uri="http://www.springframework.org/security/tags"%>  <%--import thư viện spring security taglib ngoài spring security(hỗ trợ thao tác spring security trong jsp)--%>
+
+Phần phân quyền xử lý nhưng việc sau : nếu là admin thì vào trang chủ admin , nếu là user thì vào trang chủ user
+nếu chưa đăng nhập cố tình truy cập vào những đương link đăng nhập rồi ví dụ như /quan-tri/trang-chu thi sẽ không được quyên
+nếu đăng nhập rồi với vai trò user thì khi truy cập vào đường link /quan-tri/trang-chu thì sẽ không được quyền
+
+Client gồm cả web, mobile
+web service bao gồm: SOAP và restful(XML và JSON)
+
+Client -> dto -> controller -> service -> repository
+
+Client -> dto -> api -> service -> repository
+
+Công nghệ swagger là công nghệ mô tả quản lí api là cái để fronten end và backend giao tiếp
+
+Để biến 1 class thành api thì khai báo @RestController(@Responbody là của spring framework 3.)
+
+Khi dùng API phải hiểu được khái niệm HTTP method có 4 method chính POST, PUT, DELETE, GET
+Khi thiết kế tên url-api thì nên thiết kế tên url-api dạng main-rule:
+VD:
+/new - POST
+/new - PUT
+/new - DELETE
+
+Khái niệm
+- server side render: render ngay phía server(đang áp dụng trong project) dẫn đến khi chạy danh sách ra vẫn phụ thuộc vào controller của spring mvc.
+Ví dụ trong NewController khi lấy danh sách các bài viết hoặc chỉnh sửa bài viết thì sẽ có request để gọi danh sách lên thì chỗ này không dùng api. api áp dụng cho 3 hàm thêm sửa xóa
+- client side render: render phía client khi data đẩy ra xong nó mới render ra
+
+Trong ajax:
+contentType: là kiểu dữ liệu post từ client về server
+dataType: là kiểu dư liệu trả về cho client
+
+Ajax có thể dùng để gọi api
+Cơ chế hoạt động của ajax:
+url : thuộc tính url để put url vào
+type : Định nghĩa http method post, put, delete
+contentType: Khi client đẩy dữ liệu về server định nghĩa kiểu dữ liệu cho data đó là chuỗi, JSON...(nếu sai thì sẽ báo lỗi 405)
+data: data ở ngoài jquery thì nó chỉ là một Object javascript. JSON.stringlyfy(data) chuyển từ object javascript sang json
+dataType: Là kiểu dữ liệu sẽ trả từ server về client chuyển ngược dữ liệu dạng JSON sang Object javascript cho client(khi không trả về kiểu gì thì ko cần định nghĩa ví dụ trường hợp void delete)
+
+JDBC: data khi lấy lên sẽ đổ vào resultSet sau đó từ resultSet sẽ đổ vào NewModel
+row mapper sẽ convert từ data từ resultSet sau đó chuyển vào model
+
+Khi thao tác dữ liệu vào database thì nó sẽ đẩy tất cả dữ liệu vào transaction và cơ chế của transaction là nếu như thao tác của bạn không bị lỗi thì commit còn ngược lại sẽ rollback.
+Trong transction ví dụ có 3 hàm cùng chạy:
+hàm 1: done
+hàm 2: done
+ham 3: done
+nhưng lúc này sẽ chưa change ở database mà nó sẽ có 1  table temporary(table tạm) khi tất cả các action này done hết dữ liệu thay đổi trên table ảo mói được thay đổi trên table thật
+nếu bị lối 1 trong các action thì ở table tạm sẽ reset lại toàn bộ và không apply xuông table chính sẽ bảo toàn được dữ liệu
+
+JPA auditting hỗ trợ cho các annotation @Createdate @LastModifiedDate @CreatedBy @LastModifiedBy
+Khi đăng nhập xong spring security dựa vào username thì createdby nó sẽ lấy thông tin lưu xuông tương tự cho các cái khác
+
+
